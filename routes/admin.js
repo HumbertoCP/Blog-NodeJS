@@ -73,5 +73,58 @@ router.get('/categorias/edit/:id', (req, res) =>{
     
 })
 
+router.post('/categorias/edit', (req, res) =>{
+
+    var erros = []
+
+    if(!req.body.nome || typeof req.body.nome == undefined ||req.body.nome == null){
+        erros.push({texto: "Nome inválido"})
+    }
+
+    if(!req.body.slug || typeof req.body.slug == undefined ||req.body.slug == null){
+        erros.push({texto: "Slug inválido"})
+    }
+
+    if(req.body.nome.length < 2){
+        erros.push({texto: "O nome da categoria é muito pequeno"})
+    }
+
+    if(erros.length > 0){
+        res.render('admin/editcategorias', {erros: erros})
+    }
+
+    else{
+        Categoria.findOne({_id: req.body.id}).then((categoria) =>{
+            categoria.nome = req.body.nome
+            categoria.slug = req.body.slug
+    
+            categoria.save().then(() =>{
+                req.flash('success_msg', 'Categoria editada com sucesso')
+                res.redirect('/admin/categorias')
+            }).catch((err) => {
+                req.flash('error_msg', 'Houve um erro ao salvar a edição da categoria')
+                res.redirect('/admin/categorias')
+            })
+    
+    
+        }).catch((err) => {
+            req.flash('error_msg', 'Houve um erro ao editar a categoria')
+            res.redirect('/admin/categorias')
+        })
+    }
+
+
+})
+
+router.post('/categorias/delete', (req, res) => {
+    Categoria.remove({_id: req.body.id}).then(() => {
+        req.flash('success_msg', 'Categoria deletada com sucesso')
+        res.redirect('/admin/categorias')
+    }).catch((err) => {
+        req.flash('error_msg', 'Ocorreu um errro ao tentar deletar a categoria')
+        res.redirect('/admin/categorias')
+    })
+})
+
 
 module.exports = router
