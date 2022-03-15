@@ -6,24 +6,56 @@ const app = express()
 const admin = require('./routes/admin') //importa o admin.js
 const path = require('path')
 const mongoose = require('mongoose')
+const session = require('express-session')
+const flash = require('connect-flash')
 
 
 //Configs
+    //session
+        app.use(session({
+            secret: 'cursodenode',
+            resave: true,
+            saveUninitialized: true
+        }));
+        app.use(flash())
+        
+    // Middleware
+        app.use((req, res, next) => {
+            res.locals.success_msg = req.flash('success_msg')
+            res.locals.error_msg = req.flash('error_msg')
+            next()
+        })
     //BodyParser
         app.use(bodyParser.urlencoded({extended: true}))
         app.use(bodyParser.json())
     
     //Handlebars
-        app.engine('handlebars', handlebars.engine({defaultLayout: 'main'}))
+    app.engine('handlebars', handlebars.engine({
+        defaultLayout: 'main',
+        runtimeOptions: {
+            allowProtoPropertiesByDefault: true,
+            allowProtoMethodsByDefault: true,
+        },
+    }))
         app.set('view engine', 'handlebars')
     
     //Mongoose
-        // Em breve
+        mongoose.Promise = global.Promise
+        mongoose.connect('mongodb://localhost/blogapp').then(() =>{
+            console.log('Conected to the database! ')
+        }).catch((error) =>{
+            console.log('Error when connecting to the database ')
+        })
 
     // Public
     app.use('/css', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')))
     app.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')))
     app.use('/js', express.static(path.join(__dirname, 'node_modules/jquery/dist')))
+
+/*     app.use((req, res, next) =>{ //middleware
+        console.log("OI EU SOU UM MIDDLEWARE!")
+        next()
+    }) */
 //Routes
     app.use('/admin', admin) //admin referencia a constante de rotas na linha 6
 
