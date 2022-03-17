@@ -57,6 +57,10 @@ const flash = require('connect-flash')
         next()
     }) */
 //Routes
+    app.get('/', (req, res) => {
+        res.render('index')
+    })
+
     app.use('/admin', admin) //admin referencia a constante de rotas na linha 6
 
 //others
