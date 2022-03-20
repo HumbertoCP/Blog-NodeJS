@@ -38,6 +38,8 @@ const Categoria = mongoose.model('categorias')
         app.use((req, res, next) => {
             res.locals.success_msg = req.flash('success_msg')
             res.locals.error_msg = req.flash('error_msg')
+            res.locals.error = req.flash('error')
+            res.locals.user = req.user || null
             next()
         })
     //BodyParser
@@ -129,7 +131,7 @@ const Categoria = mongoose.model('categorias')
     })
 
     app.use('/admin', admin) //admin referencia a constante de rotas na linha 6
-    app.use('/usuario', usuario)
+    app.use('/usuarios', usuario)
 //others
 const PORT = 8082
 app.listen(PORT, () =>{
