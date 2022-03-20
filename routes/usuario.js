@@ -4,6 +4,7 @@ const router = express.Router()
 const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
 const passport = require('passport')
+const res = require('express/lib/response')
 
 require('../models/Usuario')
 const Usuario = mongoose.model("usuarios")
@@ -87,6 +88,11 @@ router.post('/login', (req, res, next) => {
     })(req, res, next)
 })
 
+router.get('/logout', (req, res) => {
+    req.logout()
+    req.flash('success_msg', 'Deslogado com sucesso')
+    res.redirect('/')
+})
 
 
 

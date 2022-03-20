@@ -10,6 +10,7 @@ const mongoose = require('mongoose')
 const session = require('express-session')
 const flash = require('connect-flash')
 const passport = require('passport')
+const {eAdmin} = require('./helpers/eAdmin')
 
 require('./config/auth')(passport)
 
@@ -130,7 +131,7 @@ const Categoria = mongoose.model('categorias')
         })
     })
 
-    app.use('/admin', admin) //admin referencia a constante de rotas na linha 6
+    app.use('/admin', eAdmin, admin) //admin referencia a constante de rotas na linha 6
     app.use('/usuarios', usuario)
 //others
 const PORT = 8082

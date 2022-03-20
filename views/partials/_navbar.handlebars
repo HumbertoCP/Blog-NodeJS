@@ -12,14 +12,27 @@
         <li class="nav-item">
           <a class="nav-link" href="/categorias">Categorias</a>
         </li>
-        
-        <li class="nav-item">
-          <a href="/usuarios/login" class="nav-link">Login</a>
-        </li>
+        {{#if user}}
+          {{!-- TODO: apresentar nome do usuario na navbar{{user.nome}} --}}
+          <li class="nav-item">
+              <a href="/usuarios/logout" class="nav-link">Sair</a>
+            </li>
+        {{else}}
+          <li class="nav-item">
+            <a href="/usuarios/login" class="nav-link">Login</a>
+          </li>
 
-        <li class="nav-item">
-          <a href="/usuarios/registro" class="nav-link">Registro</a>
-        </li>
+          <li class="nav-item">
+            <a href="/usuarios/registro" class="nav-link">Registro</a>
+          </li>
+        {{/if}}
+
+        {{#if user._eAdmin}}
+          <li class="nav-item">
+            <a href="#" class="nav-link">Admin</a>
+          </li>
+        {{else}}
+        {{/if}}
       </ul>
     </div>
   </div>
