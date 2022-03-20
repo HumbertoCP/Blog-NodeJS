@@ -10,7 +10,7 @@ O sistema possui, entre outras funcionalidades:
 
 # Executar
 
-Para executar o projeto será necessário instalar o NodeJS
+Para executar o projeto é necessário ter instalado o NodeJS e o MongoDB
 
 Execute ```npm i``` para instalar as depêndencias necessárias
 
